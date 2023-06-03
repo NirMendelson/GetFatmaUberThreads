@@ -33,7 +33,7 @@ public class GUI extends JFrame {
 
 		// Add components to the frame
 		add(titleLabel);
-		add(new JLabel()); // Empty label for spacing
+		add(new JLabel()); 
 		add(workingTimeLabel);
 		add(workingTimeField);
 		add(numDriversLabel);
@@ -84,7 +84,7 @@ public class GUI extends JFrame {
 		ReadyRideLine readyRideLine = new ReadyRideLine();
 
 		// Read requests from the file
-		String filePath = "C:\\Users\\nirme\\eclipse-workspace\\ThreadsProject\\src\\Data.txt";
+		String filePath = "C:\\Users\\nirme\\git\\repository\\ThreadsProject\\src\\Data.txt";
 		ArrayList<Request> requests = requestTxtReader.readRequests(filePath, clerkLine);
 
 		// Start clerk threads
@@ -117,21 +117,17 @@ public class GUI extends JFrame {
 
 
 		// create and start manager
-		Manager manager = new Manager(managerLine, 8, informationSystem);
+		Manager manager = new Manager(managerLine, 3, informationSystem);
 		Thread managerThread = new Thread(manager);
 		managerThread.start();
 
-		// Start request threads from the ArrayList
+		// Start request threads
 		for (Request request : requests) {
 			Thread requestThread = new Thread(request);
 			requestThread.start();
 		}
 
-		// Start driver threads
-		//		Driver driver = new Driver(1, "A", readyRideLine, informationSystem, manager);
-		//		Thread driverThread = new Thread(driver);
-		//		driverThread.start();
-
+		// create and start driver threads
 		if (numDrivers % 2 == 0) {
 			for (int i = 0; i < numDrivers/2; i++) {
 				Driver driver = new Driver(i, 'A', readyRideLine, informationSystem, manager);

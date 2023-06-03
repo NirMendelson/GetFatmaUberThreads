@@ -2,18 +2,18 @@ import java.util.Vector;
 
 public class TaxiLine {
 
-    private Vector<Request> buffer;
+    private Vector<UpgradedServiceCall> buffer;
 
     public TaxiLine() {
-        buffer = new Vector<Request>();
+        buffer = new Vector<UpgradedServiceCall>();
     }
 
-    public synchronized void insert(Request item) {
+    public synchronized void insert(UpgradedServiceCall item) {
         buffer.add(item);
         this.notifyAll();
     }
     
-    public synchronized boolean contains(Request item) {
+    public synchronized boolean contains(UpgradedServiceCall item) {
     	if (buffer.contains(item)) {
     		return true;
     	}
@@ -22,7 +22,7 @@ public class TaxiLine {
     	}
     }
 
-    public synchronized Request extractFirst() {
+    public synchronized UpgradedServiceCall extractFirst() {
     	while (buffer.isEmpty()) {
             try {
                 this.wait();
@@ -38,7 +38,7 @@ public class TaxiLine {
         return buffer.isEmpty();
     }
     
-    public synchronized Request getFirst() {
+    public synchronized UpgradedServiceCall getFirst() {
     	while (buffer.isEmpty()) {
             try {
                 this.wait();

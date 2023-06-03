@@ -17,23 +17,26 @@ public class Clerk implements Runnable {
 
 	@Override
 	public void run() {
+		// don't run if the day is over
+
 		while (!informationSystem.getIsDayOver()) {
 			try {
-				synchronized (clerkLine) {
-					
-					Request currentRequest = clerkLine.getFirst();
+//				synchronized (clerkLine) {
+					// take the first request from request line
+					Request currentRequest = clerkLine.extractFirst();
+					// if the day is over then break
 					if (informationSystem.getIsDayOver()) {
 						break;
 					}
 					System.out.println("clerk " + this.ID + " is handling request: " + currentRequest.getID());
 					Thread.sleep(currentRequest.getTime());
-					
-					
+
+
 					// Check if customer exists in the informationSystem, if not, add them
 					if (!informationSystem.containsCustomer(currentRequest.getID())) {
 						informationSystem.addCustomer(currentRequest.getID());
 					}
-
+					// if the request has distance of under 100 then create a service call and insert it to the scheduler line
 					if (currentRequest.getDistance() < 100) {
 						ServiceCall serviceCall = new ServiceCall(currentRequest.getID(), currentRequest.getType(), currentRequest.getArea(), currentRequest.getDistance());
 						schedulerLine.insert(serviceCall);
@@ -43,7 +46,8 @@ public class Clerk implements Runnable {
 						System.out.println("Added service call " + serviceCall.getCustomerID() + " to schedulerLine");
 						currentRequest.closeRequest();
 					} 
-					
+
+					// if the request has distance of over 100 then create a service call and insert it to the manager line
 					else {
 						Thread.sleep(500);
 						if (informationSystem.getIsDayOver()) {
@@ -52,13 +56,15 @@ public class Clerk implements Runnable {
 						managerLine.insert(currentRequest);
 						System.out.println("Added request " + currentRequest.getID() + " to managerLine");
 					}
-					clerkLine.extractFirst();
+					// extract this request from the list
+//					clerkLine.extractFirst();
+					// pay the clerk
 					this.payClerk();
-					//				System.out.println("clerk salary is " + this.getSalary());
-					//				System.out.println("Clerk " + this.ID + " is free");
+
 				}
 
-			} catch (InterruptedException e) {
+//			} 
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}

@@ -19,19 +19,21 @@ public class Scheduler implements Runnable{
 	@Override
 	public void run() {
 		while (!informationSystem.getIsDayOver()) {
-			synchronized (schedulerLine) {
-				if (schedulerLine.getFirst().getServiceArea().equals(this.serviceArea)) {
+//			synchronized (schedulerLine) {
+			ServiceCall currentServiceCall = schedulerLine.extractFirst();
+				if (!currentServiceCall.getServiceArea().equals(this.serviceArea)) {
+					schedulerLine.insert(currentServiceCall);
+				}
+					else {
 					if (informationSystem.getIsDayOver()) {
 						break;
 					}
-					ServiceCall currentServiceCall = schedulerLine.getFirst();
 					System.out.println("scheduler " + this.ID + " got service Call " + currentServiceCall.getCustomerID());
 //					System.out.println("vehicle list: " + informationSystem.getVehicleList().size());
 
 					for (int i = 0; i < informationSystem.getVehicleList().size(); i++) {
 						if (informationSystem.getVehicleList().get(i).getType().equals(currentServiceCall.getServiceType())) {
-							
-							Vehicle currentVehicle = informationSystem.getVehicleList().remove(i);
+							Vehicle currentVehicle = informationSystem.extractVehicle(i);
 							UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentServiceCall.getID(), currentServiceCall.getCustomerID(), currentServiceCall.getServiceType(), currentServiceCall.getServiceArea(), currentServiceCall.getDistance(), currentVehicle, 0);
 							if (currentVehicle.getType().equals("Taxi")) {
 								informationSystem.addTaxiServiceCall(upgradedServiceCall);
@@ -52,15 +54,15 @@ public class Scheduler implements Runnable{
 							break; // Exit the loop after processing one service call
 						}
 					}
-					schedulerLine.extractFirst();
+//					schedulerLine.extractFirst();
 					this.payScheduler();
 //					System.out.println("scheduler " + this.ID + " salary is " + this.salary);
 
 				}
+				}
 
 			}
-		}
-	}
+//	}
 
 
 
@@ -69,4 +71,3 @@ public class Scheduler implements Runnable{
 		informationSystem.addSalaryToScheduler(3);
 	}
 }
-

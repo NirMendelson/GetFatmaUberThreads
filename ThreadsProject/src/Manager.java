@@ -18,8 +18,8 @@ public class Manager implements Runnable{
 	@Override
 	public void run() {
 		while (!this.isDayOver) {
-			synchronized (managerLine) {
-			Request currentRequest = managerLine.getFirst();
+//			synchronized (managerLine) {
+			Request currentRequest = managerLine.extractFirst();
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -30,7 +30,7 @@ public class Manager implements Runnable{
 			}
 			for (int i = 0; i < informationSystem.getVehicleList().size(); i++) {
 				if (informationSystem.getVehicleList().get(i).getType().equals(currentRequest.getType())) {
-					Vehicle currentVehicle = informationSystem.getVehicleList().remove(i);
+					Vehicle currentVehicle = informationSystem.extractVehicle(i);
 					ServiceCall currentCall = new ServiceCall(currentRequest.getID(), currentRequest.getType(), currentRequest.getArea(), currentRequest.getDistance());
 					UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentVehicle, 20);
 					if (currentVehicle.getType().equals("Taxi")) {
@@ -40,14 +40,13 @@ public class Manager implements Runnable{
 					}
 					currentRequest.closeRequest();
 					System.out.println("New special Service Call (ID: " + currentRequest.getID() + ") Arrived");
-					managerLine.extractFirst();
 					System.out.println("manager end");
 					break;
 				}
 			}
 			}
 		}
-	}
+//	}
 
 	public void missionComplete() {
 		this.numOfCompleteMissions++;		

@@ -59,31 +59,10 @@ public class InformationSystem {
 		return false;
     }
 	
-	public void addToVehicleList(Vehicle vehicle) {
+	public synchronized void addToVehicleList(Vehicle vehicle) {
 		this.vehicleList.add(vehicle);
+		this.notifyAll();
 	}
-	
-    public synchronized UpgradedServiceCall getFirstFromTaxi() {
-    	while (TaxiServiceCall.isEmpty()) {
-    		try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-    	return TaxiServiceCall.get(0);
-    }
-    
-    public synchronized UpgradedServiceCall getFirstFromDelivery() {
-    	while (DeliveryServiceCall.isEmpty()) {
-    		try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-    	return DeliveryServiceCall.get(0);
-    }
     
     
     public synchronized UpgradedServiceCall extractFirstFromTaxi() {
@@ -131,6 +110,17 @@ public class InformationSystem {
 	
 	public ArrayList<Vehicle> getVehicleList() {
 		return this.vehicleList;
+	}
+	
+	public synchronized Vehicle extractVehicle(int i) {
+		while (vehicleList.isEmpty()) {
+    		try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
+		return this.vehicleList.remove(i);
 	}
 	
 	public void removeVehicle(Vehicle vehicle) {

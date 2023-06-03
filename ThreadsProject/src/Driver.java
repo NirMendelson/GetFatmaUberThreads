@@ -31,16 +31,15 @@ public class Driver implements Runnable{
 	@Override
 	public void run() {
 		while (!informationSystem.getIsDayOver()) {
-			synchronized (readyRideLine) {
+//			synchronized (readyRideLine) {
 				ReadyRide currentRide = null;
 				if ((readyRideLine.getFirst().getServiceType().equals("Delivery") && this.license == 'A') || (readyRideLine.getFirst().getServiceType().equals("Taxi") && this.license == 'B')) {
 					if (informationSystem.getIsDayOver()) {
 						break;
 					}
-					currentRide = readyRideLine.getFirst();
+					currentRide = readyRideLine.extractFirst();
 					this.extraSalary = currentRide.getExtraSalary();
 					System.out.println("Driver " + this.ID +" started to work on ride " + currentRide.getCustomerID());
-					readyRideLine.extractFirst();
 					try {
 						Thread.sleep((long) currentRide.getVehicle().calculateDrivingTime(currentRide.getDistance()));
 					} catch (InterruptedException e) {
@@ -84,7 +83,7 @@ public class Driver implements Runnable{
 				}
 			}
 		}
-	}
+//	}
 
 	public void addRating(int rating) {
 		this.rating += rating;

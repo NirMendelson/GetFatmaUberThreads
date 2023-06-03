@@ -11,9 +11,7 @@ public class ClerkLine {
     }
 
     public synchronized void insert(Request item) {
-//    	if (informationSystem.getIsDayOver()) {
-//			Thread.interrupted();
-//		}
+
         buffer.add(item);
         this.notifyAll();
     }
@@ -29,9 +27,6 @@ public class ClerkLine {
 
     public synchronized Request extractFirst() {
     	while (buffer.isEmpty()) {
-//    		if (informationSystem.getIsDayOver()) {
-//    			Thread.interrupted();
-//    		}
     		try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -47,9 +42,6 @@ public class ClerkLine {
     
     public synchronized Request getFirst() {
     	while (buffer.isEmpty()) {
-//    		if (informationSystem.getIsDayOver()) {
-//    			Thread.interrupted();
-//    		}
     		try {
 				this.wait();
 			} catch (InterruptedException e) {
