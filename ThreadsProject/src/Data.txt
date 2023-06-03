@@ -1,0 +1,9 @@
+id	serviceType	serviceArea	distance	Time	Arrival
+100	Taxi	Jerusalem	69	2.8	18
+101	Taxi	Jerusalem	34	1.5	19
+102	Delivery	Tel Aviv	97	3.1	13
+103	Delivery	Jerusalem	86	0.7	9
+104	Delivery	Tel Aviv	8	1.6	17
+105	Delivery	Jerusalem	96	1.7	6
+106	Delivery	Tel Aviv	74	3.3	23
+107	Taxi	Jerusalem	9	0.7	8
