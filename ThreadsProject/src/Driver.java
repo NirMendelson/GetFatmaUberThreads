@@ -5,6 +5,7 @@ public class Driver implements Runnable{
 	private int ID;
 	private ReadyRideLine readyRideLine;
 	private InformationSystem informationSystem;
+	private VehicleList vehicleList;
 	private Manager manager;
 	private char license;
 	private int salary;
@@ -13,11 +14,12 @@ public class Driver implements Runnable{
 	private double totalDrivingProfit;
 	private int extraSalary;
 
-	public Driver(int ID, char license, ReadyRideLine readyRideLine, InformationSystem informationSystem, Manager manager) {
+	public Driver(int ID, char license, ReadyRideLine readyRideLine, InformationSystem informationSystem, Manager manager, VehicleList vehicleList) {
 		this.ID = ID;
 		this.license = license;
 		this.readyRideLine = readyRideLine;
 		this.informationSystem = informationSystem;
+		this.vehicleList = vehicleList;
 		this.manager = manager;
 		this.salary = 0;
 		this.rating = 0;
@@ -31,7 +33,6 @@ public class Driver implements Runnable{
 	@Override
 	public void run() {
 		while (!informationSystem.getIsDayOver()) {
-//			synchronized (readyRideLine) {
 				ReadyRide currentRide = null;
 				if ((readyRideLine.getFirst().getServiceType().equals("Delivery") && this.license == 'A') || (readyRideLine.getFirst().getServiceType().equals("Taxi") && this.license == 'B')) {
 					if (informationSystem.getIsDayOver()) {
@@ -46,7 +47,6 @@ public class Driver implements Runnable{
 						e.printStackTrace();
 					}
 					for (int i = 0; i < informationSystem.getCustomerList().size(); i++) {
-//						System.out.println("current ride ID: " + currentRide.getCustomerID() + " customer ID: " + informationSystem.getCustomerList().get(i).getID());
 						if (currentRide.getCustomerID() == informationSystem.getCustomerList().get(i).getID()) {
 							
 							this.addRating(informationSystem.getCustomerList().get(i).giveRating());
@@ -70,7 +70,7 @@ public class Driver implements Runnable{
 						informationSystem.addMissionInJerusalem();
 					}
 					System.out.println("Drive " + currentRide.getCustomerID() + " is over");
-					informationSystem.addToVehicleList(currentRide.getVehicle());
+					vehicleList.addToVehicleList(currentRide.getVehicle());
 					this.payDriver();
 					manager.missionComplete();
 					System.out.println("num of completed missions: " + manager.getNumOfCompletedMissions());
@@ -83,7 +83,6 @@ public class Driver implements Runnable{
 				}
 			}
 		}
-//	}
 
 	public void addRating(int rating) {
 		this.rating += rating;

@@ -21,7 +21,6 @@ public class Clerk implements Runnable {
 
 		while (!informationSystem.getIsDayOver()) {
 			try {
-//				synchronized (clerkLine) {
 					// take the first request from request line
 					Request currentRequest = clerkLine.extractFirst();
 					// if the day is over then break
@@ -56,14 +55,11 @@ public class Clerk implements Runnable {
 						managerLine.insert(currentRequest);
 						System.out.println("Added request " + currentRequest.getID() + " to managerLine");
 					}
-					// extract this request from the list
-//					clerkLine.extractFirst();
 					// pay the clerk
 					this.payClerk();
 
 				}
 
-//			} 
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}

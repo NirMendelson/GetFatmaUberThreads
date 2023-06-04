@@ -76,9 +76,12 @@ public class GUI extends JFrame {
 	}
 
 	private void runProgram() {
+		VehicleList vehicleList = new VehicleList();
 		InformationSystem informationSystem = new InformationSystem();
-		ClerkLine clerkLine = new ClerkLine(informationSystem);
-
+		ClerkLine clerkLine = new ClerkLine();
+		
+		
+		
 		SchedulerLine schedulerLine = new SchedulerLine(informationSystem);
 		ManagerLine managerLine = new ManagerLine();
 		ReadyRideLine readyRideLine = new ReadyRideLine();
@@ -95,8 +98,8 @@ public class GUI extends JFrame {
 		}
 
 		// Start scheduler threads
-		Scheduler scheduler1 = new Scheduler(1, "Tel Aviv", schedulerLine, informationSystem);
-		Scheduler scheduler2 = new Scheduler(2, "Jerusalem", schedulerLine, informationSystem);
+		Scheduler scheduler1 = new Scheduler(1, "Tel Aviv", schedulerLine, informationSystem, vehicleList);
+		Scheduler scheduler2 = new Scheduler(2, "Jerusalem", schedulerLine, informationSystem, vehicleList);
 		Thread schedulerThread1 = new Thread(scheduler1);
 		Thread schedulerThread2 = new Thread(scheduler2);
 		schedulerThread1.start();
@@ -117,7 +120,7 @@ public class GUI extends JFrame {
 
 
 		// create and start manager
-		Manager manager = new Manager(managerLine, 3, informationSystem);
+		Manager manager = new Manager(managerLine, 100, informationSystem, vehicleList);
 		Thread managerThread = new Thread(manager);
 		managerThread.start();
 
@@ -130,24 +133,24 @@ public class GUI extends JFrame {
 		// create and start driver threads
 		if (numDrivers % 2 == 0) {
 			for (int i = 0; i < numDrivers/2; i++) {
-				Driver driver = new Driver(i, 'A', readyRideLine, informationSystem, manager);
+				Driver driver = new Driver(i, 'A', readyRideLine, informationSystem, manager, vehicleList);
 				Thread driverThread = new Thread(driver);
 				driverThread.start();
 			}
 			for (int i = numDrivers/2; i < numDrivers; i++) {
-				Driver driver = new Driver(i, 'B', readyRideLine, informationSystem, manager);
+				Driver driver = new Driver(i, 'B', readyRideLine, informationSystem, manager, vehicleList);
 				Thread driverThread = new Thread(driver);
 				driverThread.start();
 			}
 		}
 		else {
 			for (int i = 0; i < (numDrivers-1)/2; i++) {
-				Driver driver = new Driver(i, 'A', readyRideLine, informationSystem, manager);
+				Driver driver = new Driver(i, 'A', readyRideLine, informationSystem, manager, vehicleList);
 				Thread driverThread = new Thread(driver);
 				driverThread.start();
 			}
 			for (int i = (numDrivers-1)/2; i < (numDrivers-1); i++) {
-				Driver driver = new Driver(i, 'B', readyRideLine, informationSystem, manager);
+				Driver driver = new Driver(i, 'B', readyRideLine, informationSystem, manager, vehicleList);
 				Thread driverThread = new Thread(driver);
 				driverThread.start();
 			}
@@ -159,7 +162,7 @@ public class GUI extends JFrame {
 			} else {
 				license = 'B';
 			}
-			Driver driver = new Driver(numDrivers, license, readyRideLine, informationSystem, manager);
+			Driver driver = new Driver(numDrivers, license, readyRideLine, informationSystem, manager, vehicleList);
 			Thread driverThread = new Thread(driver);
 			driverThread.start();
 

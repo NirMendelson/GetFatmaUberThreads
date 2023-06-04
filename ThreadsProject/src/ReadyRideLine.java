@@ -10,13 +10,13 @@ public class ReadyRideLine {
     }
 
     public synchronized void insert(ReadyRide ride){
-        while (buffer.size() == maxSize) {
-            try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-        }
+//        if (buffer.size() == maxSize) {
+//            try {
+//				wait();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//        }
         buffer.add(ride);
         notifyAll();
     }

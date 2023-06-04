@@ -3,9 +3,8 @@ import java.util.Vector;
 
 public class InformationSystem {
 	private ArrayList<Customer> customersList;
-	private ArrayList<Vehicle> vehicleList;
-	private ArrayList<UpgradedServiceCall> DeliveryServiceCall;
-	private ArrayList<UpgradedServiceCall> TaxiServiceCall; 
+	private ArrayList<UpgradedServiceCall> deliveryServiceCall;
+	private ArrayList<UpgradedServiceCall> taxiServiceCall; 
 	private double totalSchedulersPayment;
 	private double totalCarOfficersPayment;
 	private double totalDriversPayment;
@@ -17,30 +16,25 @@ public class InformationSystem {
 	private int numOfDrivers;
 	private boolean isDayOver;
 	private double carOfficersWorkingTime;
+	private int inLineForTaxi;
+	private int inLineForDelivery;
 
 	
 	public InformationSystem() {
 		this.customersList = new ArrayList<Customer>();
-		this.vehicleList = new ArrayList<Vehicle>();
-		this.DeliveryServiceCall = new ArrayList<UpgradedServiceCall>();
-		this.TaxiServiceCall = new ArrayList<UpgradedServiceCall>();
+		this.deliveryServiceCall = new ArrayList<UpgradedServiceCall>();
+		this.taxiServiceCall = new ArrayList<UpgradedServiceCall>();
 		this.isDayOver = false;
+		this.inLineForTaxi = 0;
+		this.inLineForDelivery = 0;
 	    for (int i = 100; i < 190; i++) {
 	    	Customer customer = new Customer(i);
 	        customersList.add(customer);
 	    }
-	    for (int i = 0; i < 5; i++) {
-	    	Motorcycle motorcycle = new Motorcycle();
-	    	Taxi taxi = new Taxi();
-	    	vehicleList.add(motorcycle);
-	    	vehicleList.add(taxi);
-	    }
 	}
 	
 	
-	public synchronized ArrayList<UpgradedServiceCall> getDeliveryList() {
-		return this.DeliveryServiceCall;
-	}
+
 	
 	public void setIsDayOver(boolean isOver) {
 		this.isDayOver = isOver;
@@ -59,73 +53,98 @@ public class InformationSystem {
 		return false;
     }
 	
-	public synchronized void addToVehicleList(Vehicle vehicle) {
-		this.vehicleList.add(vehicle);
-		this.notifyAll();
-	}
-    
-    
-    public synchronized UpgradedServiceCall extractFirstFromTaxi() {
-    	while (TaxiServiceCall.isEmpty()) {
-    		try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-        return TaxiServiceCall.remove(0);
-    }
-    
-    public synchronized UpgradedServiceCall extractFirstFromDelivery() {
-    	while (DeliveryServiceCall.isEmpty()) {
-    		try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-        return DeliveryServiceCall.remove(0);
-    }
-    
-    
-	
 	public synchronized void addCustomer(int ID) {
 		Customer customer = new Customer(ID);
 		customersList.add(customer);
 	}
 	
-	public synchronized void addDeliveryServiceCall(UpgradedServiceCall upgradedServiceCall) {
-		this.DeliveryServiceCall.add(upgradedServiceCall);
-		this.notifyAll();
-	}
-	
-	public synchronized void addTaxiServiceCall(UpgradedServiceCall upgradedServiceCall) {
-		this.TaxiServiceCall.add(upgradedServiceCall);
-		this.notifyAll();
-	}
 	
 	public ArrayList<Customer> getCustomerList() {
 		return this.customersList;
 	}
 	
-	public ArrayList<Vehicle> getVehicleList() {
-		return this.vehicleList;
+	public synchronized int getTaxiServiceCallSize() {
+		return this.taxiServiceCall.size();
 	}
 	
-	public synchronized Vehicle extractVehicle(int i) {
-		while (vehicleList.isEmpty()) {
-    		try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-		return this.vehicleList.remove(i);
+	public synchronized int getDeliveryServiceCallSize() {
+		return this.deliveryServiceCall.size();
 	}
 	
-	public void removeVehicle(Vehicle vehicle) {
-		this.vehicleList.remove(vehicle);
+	public synchronized int getLineForTaxi() {
+		return this.inLineForTaxi;
 	}
+	
+	public synchronized int getLineForDelivery() {
+		return this.inLineForDelivery;
+	}
+	
+	public synchronized int addToLineForTaxi() {
+		this.inLineForTaxi++;
+		return this.inLineForTaxi;
+
+	}
+	
+	public synchronized int addToLineForDelivery() {
+		this.inLineForDelivery++;
+		return this.inLineForDelivery;
+	}
+	
+	public synchronized int subtractFromLineForTaxi() {
+		this.inLineForTaxi--;
+		return this.inLineForTaxi;
+	}
+	
+	public synchronized int subtractFromLineForDelivery() {
+		this.inLineForDelivery--;
+		return this.inLineForDelivery;
+	}
+	
+	
+	
+	public synchronized void addTaxiServiceCall(UpgradedServiceCall upgradedServiceCall) {
+		this.taxiServiceCall.add(upgradedServiceCall);
+		this.notifyAll();
+        System.out.println("Notify all car officers in the taxi");
+
+	}
+    
+
+    public synchronized UpgradedServiceCall extractFirstFromTaxi() {
+    	while (taxiServiceCall.isEmpty()) {
+            try {
+                System.out.println("Car Officer is waiting for taxi");
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+        }
+    	System.out.println("Car Officer stopped waiting for taxi");
+
+    	return taxiServiceCall.remove(0);
+    }
+    
+    public synchronized void addDeliveryServiceCall(UpgradedServiceCall upgradedServiceCall) {
+		this.deliveryServiceCall.add(upgradedServiceCall);
+		this.notifyAll();
+        System.out.println("Notify all car officers in the delivery");
+
+	}
+
+    public synchronized UpgradedServiceCall extractFirstFromDelivery() {
+    	while (deliveryServiceCall.isEmpty()) {
+            try {
+                System.out.println("Car Officer is waiting for delivery");
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+        }
+    	System.out.println("Car Officer stopped waiting for delivey");
+    	return deliveryServiceCall.remove(0);
+    }
 	
 	public void addSalaryToDriver(double payment) {
 		totalDriversPayment += payment;
@@ -211,13 +230,5 @@ public class InformationSystem {
 	public double getCarOfficersWorkingTime() {
 		return this.carOfficersWorkingTime;
 	}
-	
-
-	
-	
-
-
-
-	
 	
 }

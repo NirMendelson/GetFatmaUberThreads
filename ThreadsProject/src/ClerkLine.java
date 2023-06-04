@@ -3,11 +3,9 @@ import java.util.Vector;
 public class ClerkLine {
 
     private Vector<Request> buffer;
-    private InformationSystem informationSystem;
 
-    public ClerkLine(InformationSystem informationSystem) {
+    public ClerkLine() {
         buffer = new Vector<Request>();
-        this.informationSystem = informationSystem;
     }
 
     public synchronized void insert(Request item) {

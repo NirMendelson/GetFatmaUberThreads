@@ -1,11 +1,11 @@
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class ManagerLine {
 
-    private Vector<Request> buffer;
+    private ArrayList<Request> buffer;
 
     public ManagerLine() {
-        buffer = new Vector<Request>();
+        buffer = new ArrayList<>();
     }
 
     public synchronized void insert(Request item) {
@@ -13,25 +13,23 @@ public class ManagerLine {
         this.notifyAll();
     }
     
+    public synchronized void insertToStart(Request item) {
+    	buffer.add(0, item);
+    }
+    
     public synchronized boolean contains(Request item) {
-    	if (buffer.contains(item)) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
+        return buffer.contains(item);
     }
 
     public synchronized Request extractFirst() {
-    	while (buffer.isEmpty()) {
+        while (buffer.isEmpty()) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            
         }
-    	return buffer.remove(0);
+        return buffer.remove(0);
     }
     
     public synchronized boolean isEmpty() {
@@ -39,7 +37,7 @@ public class ManagerLine {
     }
     
     public synchronized Request getFirst() {
-    	while (buffer.isEmpty()) {
+        while (buffer.isEmpty()) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
@@ -48,6 +46,4 @@ public class ManagerLine {
         }
         return buffer.get(0);
     }
-
-    
 }

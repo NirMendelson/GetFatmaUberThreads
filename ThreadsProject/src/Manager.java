@@ -6,20 +6,22 @@ public class Manager implements Runnable{
 	private int numOfMissions;
 	private int numOfCompleteMissions;
 	private boolean isDayOver;
+	private VehicleList vehicleList;
 
-	public Manager(ManagerLine managerLine, int numOfMissions, InformationSystem informationSystem) {
+	public Manager(ManagerLine managerLine, int numOfMissions, InformationSystem informationSystem, VehicleList vehicleList) {
 		this.managerLine = managerLine;
 		this.informationSystem = informationSystem;
 		this.numOfMissions = numOfMissions;
+		this.vehicleList = vehicleList;
 		this.numOfCompleteMissions = 0;
 		this.isDayOver = false;
 	}
 
 	@Override
 	public void run() {
-		while (!this.isDayOver) {
-//			synchronized (managerLine) {
+		while (!informationSystem.getIsDayOver()) {
 			Request currentRequest = managerLine.extractFirst();
+			System.out.println("manager working of request: " + currentRequest.getID());
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -28,34 +30,59 @@ public class Manager implements Runnable{
 			if (informationSystem.getIsDayOver()) {
 				break;
 			}
-			for (int i = 0; i < informationSystem.getVehicleList().size(); i++) {
-				if (informationSystem.getVehicleList().get(i).getType().equals(currentRequest.getType())) {
-					Vehicle currentVehicle = informationSystem.extractVehicle(i);
-					ServiceCall currentCall = new ServiceCall(currentRequest.getID(), currentRequest.getType(), currentRequest.getArea(), currentRequest.getDistance());
-					UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentVehicle, 20);
-					if (currentVehicle.getType().equals("Taxi")) {
-						informationSystem.addTaxiServiceCall(upgradedServiceCall);
-					} else {
-						informationSystem.addDeliveryServiceCall(upgradedServiceCall);
-					}
-					currentRequest.closeRequest();
-					System.out.println("New special Service Call (ID: " + currentRequest.getID() + ") Arrived");
-					System.out.println("manager end");
-					break;
+
+			System.out.println("vehicle list size: " + vehicleList.getVehicleList().size());
+			Vehicle currentVehicle = vehicleList.extractVehicle(0);
+			System.out.println("current vehicle is " + currentVehicle.getType());
+			System.out.println("current request is " + currentRequest.getType());
+			System.out.println("manager a");
+			if (!currentVehicle.getType().equals(currentRequest.getType())) {
+				System.out.println("manager b");
+				vehicleList.addToVehicleList(currentVehicle);
+				System.out.println("manager c");
+				managerLine.insertToStart(currentRequest);
+			}	
+			else {
+				System.out.println("manager d");
+				ServiceCall currentCall = new ServiceCall(currentRequest.getID(), currentRequest.getType(), currentRequest.getArea(), currentRequest.getDistance());
+				UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentVehicle, 20);
+				if (currentVehicle.getType().equals("Taxi")) {
+					informationSystem.addTaxiServiceCall(upgradedServiceCall);
+				} else {
+					informationSystem.addDeliveryServiceCall(upgradedServiceCall);
 				}
+				currentRequest.closeRequest();
+				System.out.println("New special Service Call (ID: " + currentRequest.getID() + ") Arrived");
+				System.out.println("manager end");
 			}
-			}
+
+			//			for (int i = 0; i < vehicleList.getVehicleList().size(); i++) {
+			//				if (vehicleList.getVehicleList().get(i).getType().equals(currentRequest.getType())) {
+			//					Vehicle currentVehicle = vehicleList.extractVehicle(i);
+			//					ServiceCall currentCall = new ServiceCall(currentRequest.getID(), currentRequest.getType(), currentRequest.getArea(), currentRequest.getDistance());
+			//					UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentVehicle, 20);
+			//					if (currentVehicle.getType().equals("Taxi")) {
+			//						informationSystem.addTaxiServiceCall(upgradedServiceCall);
+			//					} else {
+			//						informationSystem.addDeliveryServiceCall(upgradedServiceCall);
+			//					}
+			//					currentRequest.closeRequest();
+			//					System.out.println("New special Service Call (ID: " + currentRequest.getID() + ") Arrived");
+			//					System.out.println("manager end");
+			//					break;
+			//				}
+			//			}
 		}
-//	}
+	}
 
 	public void missionComplete() {
 		this.numOfCompleteMissions++;		
 	}
-	
+
 	public int getNumOfCompletedMissions() {
 		return this.numOfCompleteMissions;
 	}
-	
+
 	public void isDayOver() {
 		if (this.numOfMissions == this.numOfCompleteMissions) {
 			informationSystem.setIsDayOver(true);
@@ -69,5 +96,5 @@ public class Manager implements Runnable{
 			System.out.println("Num of Taxi missions: " + informationSystem.getNumOfTaxiMissions());
 			System.out.println("Most popular service area: " + informationSystem.getMostPopularArea());
 		}
-		}
+	}
 }
