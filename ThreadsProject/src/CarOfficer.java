@@ -28,13 +28,6 @@ public class CarOfficer implements Runnable {
 			double randomValue = Math.random();
 			chooseWhichVehicle(randomValue);
 
-//			if (randomValue < 0.5) {
-//				currentCall = informationSystem.extractFirstFromTaxi();
-//			}
-//			else {
-//				currentCall = informationSystem.extractFirstFromDelivery();
-//			}
-
 			// getting the extra fee
 			this.extraSalary = currentCall.getFee();
 			// if the day is over then break
@@ -65,7 +58,7 @@ public class CarOfficer implements Runnable {
 
 	public void payCarOfficer() {
 		this.salary +=  5 + (this.extraSalary/2);
-		informationSystem.addSalaryToCarOfficer(5);
+		informationSystem.addSalaryToCarOfficer(this.salary);
 	}
 
 	public synchronized void chooseWhichVehicle(double randomNum) {

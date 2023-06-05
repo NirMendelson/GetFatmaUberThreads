@@ -54,7 +54,7 @@ public class Scheduler implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    this.payScheduler();
+                    this.payScheduler(sleepingTime);
 				}
 				
 				
@@ -97,8 +97,9 @@ public class Scheduler implements Runnable{
 
 
 
-	public void payScheduler() {
-		this.salary += 3;
-		informationSystem.addSalaryToScheduler(3);
+	public void payScheduler(double sleepingTime) {
+		int temp = (int) (sleepingTime/1000);
+		this.salary += temp * 3;
+		informationSystem.addSalaryToScheduler(temp * 3);
 	}
 }

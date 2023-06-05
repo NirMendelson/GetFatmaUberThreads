@@ -67,8 +67,8 @@ public class Clerk implements Runnable {
 	}
 
 	public void payClerk() {
-		this.salary = this.salary + 5;
-		informationSystem.addSalaryToClerk(5);
+		this.salary = this.salary + 4;
+		informationSystem.addSalaryToClerk(4);
 	}
 
 	public int getSalary() {

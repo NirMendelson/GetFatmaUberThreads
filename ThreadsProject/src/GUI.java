@@ -120,7 +120,7 @@ public class GUI extends JFrame {
 
 
 		// create and start manager
-		Manager manager = new Manager(managerLine, 100, informationSystem, vehicleList);
+		Manager manager = new Manager(managerLine, 1, informationSystem, vehicleList);
 		Thread managerThread = new Thread(manager);
 		managerThread.start();
 

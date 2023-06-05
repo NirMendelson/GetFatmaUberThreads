@@ -89,8 +89,9 @@ public class Driver implements Runnable{
 	}
 
 	public void payDriver() {
-		this.salary += (5 + this.extraSalary);
-		informationSystem.addSalaryToDriver(5);
+		double tempPayment = calculatePayment();
+		this.salary += tempPayment;
+		informationSystem.addSalaryToDriver(tempPayment);
 	}
 
 	public void updateDistanceDrover(double distance) {
