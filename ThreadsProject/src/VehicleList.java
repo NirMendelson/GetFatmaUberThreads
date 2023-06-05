@@ -7,7 +7,7 @@ public class VehicleList {
 	
 	public VehicleList() {
 		vehicleList = new ArrayList<>();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 2; i++) {
 	    	Motorcycle motorcycle = new Motorcycle();
 	    	Taxi taxi = new Taxi();
 	    	vehicleList.add(motorcycle);

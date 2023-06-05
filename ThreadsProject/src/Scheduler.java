@@ -98,7 +98,7 @@ public class Scheduler implements Runnable{
 
 
 	public void payScheduler(double sleepingTime) {
-		int temp = (int) (sleepingTime/1000);
+		int temp = (int) (sleepingTime);
 		this.salary += temp * 3;
 		informationSystem.addSalaryToScheduler(temp * 3);
 	}
