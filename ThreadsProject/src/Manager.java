@@ -21,7 +21,6 @@ public class Manager implements Runnable{
 	public void run() {
 		while (!informationSystem.getIsDayOver()) {
 			Request currentRequest = managerLine.extractFirst();
-			//			System.out.println("manager working of request: " + currentRequest.getID());
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -31,19 +30,12 @@ public class Manager implements Runnable{
 				break;
 			}
 
-			//			System.out.println("vehicle list size: " + vehicleList.getVehicleList().size());
 			Vehicle currentVehicle = vehicleList.extractVehicle(0);
-			//			System.out.println("current vehicle is " + currentVehicle.getType());
-			//			System.out.println("current request is " + currentRequest.getType());
-			//			System.out.println("manager a");
 			if (!currentVehicle.getType().equals(currentRequest.getType())) {
-				//				System.out.println("manager b");
 				vehicleList.addToVehicleList(currentVehicle);
-				//				System.out.println("manager c");
 				managerLine.insertToStart(currentRequest);
 			}	
 			else {
-				//				System.out.println("manager d");
 				ServiceCall currentCall = new ServiceCall(currentRequest.getID(), currentRequest.getType(), currentRequest.getArea(), currentRequest.getDistance());
 				UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentVehicle, 20);
 				if (currentVehicle.getType().equals("Taxi")) {
@@ -53,7 +45,6 @@ public class Manager implements Runnable{
 				}
 				currentRequest.closeRequest();
 				System.out.println("New special Service Call (ID: " + currentRequest.getID() + ") Arrived");
-				//				System.out.println("manager end");
 			}
 		}
 	}

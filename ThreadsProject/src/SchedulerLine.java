@@ -12,18 +12,12 @@ public class SchedulerLine {
     }
 
     public synchronized void insert(ServiceCall item) {
-//    	if (informationSystem.getIsDayOver()) {
-//			Thread.interrupted();
-//		}
         buffer.add(item);
         this.notifyAll();
     }
 
     public synchronized ServiceCall extractFirst() {
         while (buffer.isEmpty()) {
-//        	if (informationSystem.getIsDayOver()) {
-//    			Thread.interrupted();
-//    		}
             try {
                 this.wait();
             } catch (InterruptedException e) {
@@ -39,9 +33,6 @@ public class SchedulerLine {
 
     public synchronized ServiceCall getFirst() {
         while (buffer.isEmpty()) {
-//        	if (informationSystem.getIsDayOver()) {
-//    			Thread.interrupted();
-//    		}
             try {
                 this.wait();
             } catch (InterruptedException e) {

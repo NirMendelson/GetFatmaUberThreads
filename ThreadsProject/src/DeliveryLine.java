@@ -11,21 +11,18 @@ public class DeliveryLine {
     public synchronized void insert(UpgradedServiceCall item) {
         buffer.add(item);
         this.notifyAll();
-//        System.out.println("Notify all car officers");
     }
    
 
     public synchronized UpgradedServiceCall extractFirst() {
     	while (buffer.isEmpty()) {
             try {
-//                System.out.println("Car Officer is waiting");
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             
         }
-//    	System.out.println("Car Officer stopped waiting");
     	return buffer.remove(0);
     }
     

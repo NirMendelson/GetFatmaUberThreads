@@ -34,8 +34,6 @@ public class CarOfficer implements Runnable {
 			if (informationSystem.getIsDayOver()) {
 				break;
 			}
-//			System.out.println("Car Officer ID: " + this.ID + " started to work on " + currentCall.getCustomerID() );
-
 			// sleep for the time that was decided in the GUI
 			try {
 				Thread.sleep((long) informationSystem.getCarOfficersWorkingTime());
@@ -47,7 +45,6 @@ public class CarOfficer implements Runnable {
 			}
 			// create a ride and insert it to the ready ride line
 			ReadyRide readyRide = new ReadyRide(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentCall.getVehicle(), currentCall.getFee()/2);
-//			System.out.println("Ride " + readyRide.getCustomerID() + " is ready");
 			readyRideLine.insert(readyRide);
 			this.payCarOfficer();
 		}

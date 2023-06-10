@@ -26,7 +26,6 @@ public class Driver implements Runnable{
 		this.totalDistanceDrove = 0;
 		this.totalDrivingProfit = 0;
 		this.extraSalary = 0;
-		// Assign other member variables as needed
 	}
 
 
@@ -40,7 +39,6 @@ public class Driver implements Runnable{
 					}
 					currentRide = readyRideLine.extractFirst();
 					this.extraSalary = currentRide.getExtraSalary();
-//					System.out.println("Driver " + this.ID +" started to work on ride " + currentRide.getCustomerID());
 					try {
 						Thread.sleep((long) currentRide.getVehicle().calculateDrivingTime(currentRide.getDistance()));
 					} catch (InterruptedException e) {
@@ -58,12 +56,10 @@ public class Driver implements Runnable{
 					this.updateDistanceDrover(currentRide.getDistance());
 					if (currentRide.getVehicle().getType().equals("Taxi")) {
 						informationSystem.addTaxiMission();
-//						System.out.println("added ride: " + currentRide.getCustomerID() + " to taxi list");
 
 					}
 					else {
 						informationSystem.addDeliveryMission();
-//						System.out.println("added ride: " + currentRide.getCustomerID() + " to delivery list");
 
 					}
 
@@ -73,11 +69,9 @@ public class Driver implements Runnable{
 					if (currentRide.getServiceArea().equals("Jerusalem")) {
 						informationSystem.addMissionInJerusalem();
 					}
-//					System.out.println("Drive " + currentRide.getCustomerID() + " is over");
 					vehicleList.addToVehicleList(currentRide.getVehicle());
 					this.payDriver();
 					manager.missionComplete();
-//					System.out.println("num of completed missions: " + manager.getNumOfCompletedMissions());
 					manager.isDayOver();
 					try {
 						Thread.sleep(1000);

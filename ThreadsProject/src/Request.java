@@ -26,14 +26,12 @@ public class Request implements Runnable {
 
     @Override
     public void run() {
-//        System.out.println("Request " + ID + " run");
         try {
             Thread.sleep(arrival); // Simulate waiting time before getting into line
 
             clerkLine.insert(this);
             // notify the clerk class
             
-//            System.out.println("started to insert request " + this.ID + " to clerkLine");
             
             synchronized (this) {
                 while (clerkLine.contains(this) && isRunning) {
