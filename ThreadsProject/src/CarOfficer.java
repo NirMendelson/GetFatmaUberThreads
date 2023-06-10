@@ -34,7 +34,7 @@ public class CarOfficer implements Runnable {
 			if (informationSystem.getIsDayOver()) {
 				break;
 			}
-			System.out.println("Car Officer ID: " + this.ID + " started to work on " + currentCall.getCustomerID() );
+//			System.out.println("Car Officer ID: " + this.ID + " started to work on " + currentCall.getCustomerID() );
 
 			// sleep for the time that was decided in the GUI
 			try {
@@ -47,7 +47,7 @@ public class CarOfficer implements Runnable {
 			}
 			// create a ride and insert it to the ready ride line
 			ReadyRide readyRide = new ReadyRide(currentCall.getID(), currentCall.getCustomerID(), currentCall.getServiceType(), currentCall.getServiceArea(), currentCall.getDistance() ,currentCall.getVehicle(), currentCall.getFee()/2);
-			System.out.println("Ride " + readyRide.getCustomerID() + " is ready");
+//			System.out.println("Ride " + readyRide.getCustomerID() + " is ready");
 			readyRideLine.insert(readyRide);
 			this.payCarOfficer();
 		}
@@ -57,30 +57,31 @@ public class CarOfficer implements Runnable {
 
 
 	public void payCarOfficer() {
-		this.salary +=  5 + (this.extraSalary/2);
-		informationSystem.addSalaryToCarOfficer(this.salary);
+		double temp = 5 + (this.extraSalary/2);
+		this.salary +=  5 + (temp);
+		informationSystem.addSalaryToCarOfficer(temp);
 	}
 
 	public synchronized void chooseWhichVehicle(double randomNum) {
 	    if (randomNum < 0.5) {
 	        if (informationSystem.getLineForDelivery() == 0 && informationSystem.getLineForTaxi() > 0) {
-	            System.out.println("Officer " + this.ID + " entered line for Delivery, in line for delivery: " + informationSystem.addToLineForDelivery());
+	            informationSystem.addToLineForDelivery();
 	            currentCall = informationSystem.extractFirstFromDelivery();
-	            System.out.println("Officer " + this.ID + " left line for Delivery, in line for delivery: " + informationSystem.subtractFromLineForDelivery());
+	            informationSystem.subtractFromLineForDelivery();
 	        } else {
-	            System.out.println("Officer " + this.ID + " entered line for Taxi, in line for taxi: " + informationSystem.addToLineForTaxi());
+	            informationSystem.addToLineForTaxi();
 	            currentCall = informationSystem.extractFirstFromTaxi();
-	            System.out.println("Officer " + this.ID + " left line for Taxi, in line for taxi: " + informationSystem.subtractFromLineForTaxi());
+	            informationSystem.subtractFromLineForTaxi();
 	        }
 	    } else {
 	        if (informationSystem.getLineForTaxi() == 0 && informationSystem.getLineForDelivery() > 0) {
-	            System.out.println("Officer " + this.ID + " entered line for Taxi, in line for taxi: " + informationSystem.addToLineForTaxi());
+	            informationSystem.addToLineForTaxi();
 	            currentCall = informationSystem.extractFirstFromTaxi();
-	            System.out.println("Officer " + this.ID + " left line for Taxi, in line for taxi: " + informationSystem.subtractFromLineForTaxi());
+	            informationSystem.subtractFromLineForTaxi();
 	        } else {
-	            System.out.println("Officer " + this.ID + " entered line for Delivery, in line for delivery: " + informationSystem.addToLineForDelivery());
+	            informationSystem.addToLineForDelivery();
 	            currentCall = informationSystem.extractFirstFromDelivery();
-	            System.out.println("Officer " + this.ID + " left line for Delivery, in line for delivery: " + informationSystem.subtractFromLineForDelivery());
+	            informationSystem.subtractFromLineForDelivery();
 	        }
 	    }
 	}

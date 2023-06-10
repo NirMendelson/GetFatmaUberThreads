@@ -105,7 +105,7 @@ public class InformationSystem {
 	public synchronized void addTaxiServiceCall(UpgradedServiceCall upgradedServiceCall) {
 		this.taxiServiceCall.add(upgradedServiceCall);
 		this.notifyAll();
-        System.out.println("Notify all car officers in the taxi");
+//        System.out.println("Notify all car officers in the taxi");
 
 	}
     
@@ -113,14 +113,14 @@ public class InformationSystem {
     public synchronized UpgradedServiceCall extractFirstFromTaxi() {
     	while (taxiServiceCall.isEmpty()) {
             try {
-                System.out.println("Car Officer is waiting for taxi");
+//                System.out.println("Car Officer is waiting for taxi");
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             
         }
-    	System.out.println("Car Officer stopped waiting for taxi");
+//    	System.out.println("Car Officer stopped waiting for taxi");
 
     	return taxiServiceCall.remove(0);
     }
@@ -128,21 +128,21 @@ public class InformationSystem {
     public synchronized void addDeliveryServiceCall(UpgradedServiceCall upgradedServiceCall) {
 		this.deliveryServiceCall.add(upgradedServiceCall);
 		this.notifyAll();
-        System.out.println("Notify all car officers in the delivery");
+//        System.out.println("Notify all car officers in the delivery");
 
 	}
 
     public synchronized UpgradedServiceCall extractFirstFromDelivery() {
     	while (deliveryServiceCall.isEmpty()) {
             try {
-                System.out.println("Car Officer is waiting for delivery");
+//                System.out.println("Car Officer is waiting for delivery");
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             
         }
-    	System.out.println("Car Officer stopped waiting for delivey");
+//    	System.out.println("Car Officer stopped waiting for delivey");
     	return deliveryServiceCall.remove(0);
     }
 	

@@ -29,10 +29,10 @@ public class Scheduler implements Runnable{
 				if (informationSystem.getIsDayOver()) {
 					break;
 				}
-				System.out.println("scheduler " + this.ID + " got service Call " + currentServiceCall.getCustomerID());		
+//				System.out.println("scheduler " + this.ID + " got service Call " + currentServiceCall.getCustomerID());		
 
 				Vehicle currentVehicle = vehicleList.extractVehicle(0);
-				System.out.println("aaa");
+//				System.out.println("aaa");
 				while(!currentVehicle.getType().equals(currentServiceCall.getServiceType())) {
 					vehicleList.addToVehicleList(currentVehicle);
 					currentVehicle = vehicleList.extractVehicle(0);
@@ -40,7 +40,7 @@ public class Scheduler implements Runnable{
 				}	
 
 				UpgradedServiceCall upgradedServiceCall = new UpgradedServiceCall(currentServiceCall.getID(), currentServiceCall.getCustomerID(), currentServiceCall.getServiceType(), currentServiceCall.getServiceArea(), currentServiceCall.getDistance(), currentVehicle, 0);
-				System.out.println("ccc");
+//				System.out.println("ccc");
 				if (currentVehicle.getType().equals("Taxi")) {
 					informationSystem.addTaxiServiceCall(upgradedServiceCall);
 				} else {
@@ -68,7 +68,7 @@ public class Scheduler implements Runnable{
 
 
 	public void payScheduler(double sleepingTime) {
-		int temp = (int) (sleepingTime);
+		double temp = sleepingTime/1000;
 		this.salary += temp * 3;
 		informationSystem.addSalaryToScheduler(temp * 3);
 	}
