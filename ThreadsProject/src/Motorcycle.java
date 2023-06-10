@@ -3,13 +3,14 @@ import java.util.Random;
 public class Motorcycle extends Vehicle{
 
 	private int maxSpeed;
-	
+
+	// a constructor for the class
 	public Motorcycle() {
 		this.type = "Delivery";
 		this.maxSpeed = 100;
 	}
 
-	
+	// a method that calculates the driving time
 	public double calculateDrivingTime(double distance) {
 		Random random = new Random();
 		double min = 0.6;

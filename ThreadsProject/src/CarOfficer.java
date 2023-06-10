@@ -7,10 +7,8 @@ public class CarOfficer implements Runnable {
 	private ReadyRideLine readyRideLine;
 	private int extraSalary;
 	private UpgradedServiceCall currentCall;
-	private int inLineForTaxi;
-	private int inLineForDelivery;
 
-
+	// a constructor for the class
 	public CarOfficer(int ID, InformationSystem informationSystem, ReadyRideLine readyRideLine) {
 		this.ID = ID;
 		this.salary = 0;
@@ -20,6 +18,7 @@ public class CarOfficer implements Runnable {
 	}
 
 	@Override
+	// implementing Runnable 
 	public void run() {
 		// don't run if the day is over
 		while (!informationSystem.getIsDayOver()) {
@@ -50,40 +49,35 @@ public class CarOfficer implements Runnable {
 		}
 	}
 
-
-
-
+	// a method the pays the officer and add the payment to the information system variable
 	public void payCarOfficer() {
 		double temp = 5 + (this.extraSalary/2);
 		this.salary +=  5 + (temp);
 		informationSystem.addSalaryToCarOfficer(temp);
 	}
 
+	// a method that chooses which vehicle the officer should choose, it start with a random choice and then it prevent a situation that one of the line is empty
 	public synchronized void chooseWhichVehicle(double randomNum) {
-	    if (randomNum < 0.5) {
-	        if (informationSystem.getLineForDelivery() == 0 && informationSystem.getLineForTaxi() > 0) {
-	            informationSystem.addToLineForDelivery();
-	            currentCall = informationSystem.extractFirstFromDelivery();
-	            informationSystem.subtractFromLineForDelivery();
-	        } else {
-	            informationSystem.addToLineForTaxi();
-	            currentCall = informationSystem.extractFirstFromTaxi();
-	            informationSystem.subtractFromLineForTaxi();
-	        }
-	    } else {
-	        if (informationSystem.getLineForTaxi() == 0 && informationSystem.getLineForDelivery() > 0) {
-	            informationSystem.addToLineForTaxi();
-	            currentCall = informationSystem.extractFirstFromTaxi();
-	            informationSystem.subtractFromLineForTaxi();
-	        } else {
-	            informationSystem.addToLineForDelivery();
-	            currentCall = informationSystem.extractFirstFromDelivery();
-	            informationSystem.subtractFromLineForDelivery();
-	        }
-	    }
+		if (randomNum < 0.5) {
+			if (informationSystem.getLineForDelivery() == 0 && informationSystem.getLineForTaxi() > 0) {
+				informationSystem.addToLineForDelivery();
+				currentCall = informationSystem.extractFirstFromDelivery();
+				informationSystem.subtractFromLineForDelivery();
+			} else {
+				informationSystem.addToLineForTaxi();
+				currentCall = informationSystem.extractFirstFromTaxi();
+				informationSystem.subtractFromLineForTaxi();
+			}
+		} else {
+			if (informationSystem.getLineForTaxi() == 0 && informationSystem.getLineForDelivery() > 0) {
+				informationSystem.addToLineForTaxi();
+				currentCall = informationSystem.extractFirstFromTaxi();
+				informationSystem.subtractFromLineForTaxi();
+			} else {
+				informationSystem.addToLineForDelivery();
+				currentCall = informationSystem.extractFirstFromDelivery();
+				informationSystem.subtractFromLineForDelivery();
+			}
+		}
 	}
-
-
-
-
 }

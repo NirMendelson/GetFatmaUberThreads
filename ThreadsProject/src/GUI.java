@@ -75,13 +75,14 @@ public class GUI extends JFrame {
 		setVisible(true);
 	}
 
+	// a method the runs the program
 	private void runProgram() {
 		VehicleList vehicleList = new VehicleList();
 		InformationSystem informationSystem = new InformationSystem();
 		ClerkLine clerkLine = new ClerkLine();
-		
-		
-		
+
+
+
 		SchedulerLine schedulerLine = new SchedulerLine(informationSystem);
 		ManagerLine managerLine = new ManagerLine();
 		ReadyRideLine readyRideLine = new ReadyRideLine();
@@ -104,7 +105,7 @@ public class GUI extends JFrame {
 		Thread schedulerThread2 = new Thread(scheduler2);
 		schedulerThread1.start();
 		schedulerThread2.start();
-		
+
 
 		// Start car officer threads
 		CarOfficer carOfficer1 = new CarOfficer(1, informationSystem, readyRideLine);
@@ -116,7 +117,7 @@ public class GUI extends JFrame {
 		carOfficerThread1.start();
 		carOfficerThread2.start();
 		carOfficerThread3.start();
-		
+
 
 
 		// create and start manager
@@ -167,12 +168,12 @@ public class GUI extends JFrame {
 			driverThread.start();
 
 		}
-
+		// passing the variables to the information system
 		informationSystem.setNumOfDrivers(numDrivers);
 		informationSystem.setCarOfficersWorkingTime(workingTime);
 	}
 
-
+	// main function, creates the GUI and runs it
 	public static void main(String[] args) {
 		// Create an instance of the GetFatmaUberGUI
 		SwingUtilities.invokeLater(new Runnable() {

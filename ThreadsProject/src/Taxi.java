@@ -2,10 +2,12 @@ import java.util.Random;
 
 public class Taxi extends Vehicle  {
 
+	// a constructor for the class
 	public Taxi() {
 		this.type = "Taxi";
 	}
-	
+
+	// a method that calculates the driving time
 	public double calculateDrivingTime(double distance) {
 		Random random = new Random();
 		double min = 0.5;
