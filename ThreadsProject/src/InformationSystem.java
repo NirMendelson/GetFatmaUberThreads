@@ -158,23 +158,23 @@ public class InformationSystem {
 		totalSchedulersPayment += payment;
 	}
 	
-	public void addSalaryToClerk(double payment) {
+	public synchronized void addSalaryToClerk(double payment) {
 		totalClerksPayment += payment;
 	}
 	
-	public void addDeliveryMission() {
+	public synchronized void addDeliveryMission() {
 		numOfDeliveryMissions++;
 	}
 	
-	public void addTaxiMission() {
+	public synchronized void addTaxiMission() {
 		numOfTaxiMissions++;
 	}
 	
-	public void addMissionInTelAviv() {
+	public synchronized void addMissionInTelAviv() {
 		numOfMissionsInTelAviv++;
 	}
 	
-	public void addMissionInJerusalem() {
+	public synchronized void addMissionInJerusalem() {
 		numOfMissionsInJerusalem++;
 	} 
 	

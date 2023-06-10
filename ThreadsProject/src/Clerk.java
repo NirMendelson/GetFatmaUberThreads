@@ -27,7 +27,7 @@ public class Clerk implements Runnable {
 					if (informationSystem.getIsDayOver()) {
 						break;
 					}
-					System.out.println("clerk " + this.ID + " is handling request: " + currentRequest.getID());
+//					System.out.println("clerk " + this.ID + " is handling request: " + currentRequest.getID());
 					Thread.sleep(currentRequest.getTime());
 
 
@@ -42,7 +42,7 @@ public class Clerk implements Runnable {
 						if (informationSystem.getIsDayOver()) {
 							break;
 						}
-						System.out.println("Added service call " + serviceCall.getCustomerID() + " to schedulerLine");
+//						System.out.println("Added service call " + serviceCall.getCustomerID() + " to schedulerLine");
 						currentRequest.closeRequest();
 					} 
 
@@ -53,7 +53,7 @@ public class Clerk implements Runnable {
 							break;
 						}
 						managerLine.insert(currentRequest);
-						System.out.println("Added request " + currentRequest.getID() + " to managerLine");
+//						System.out.println("Added request " + currentRequest.getID() + " to managerLine");
 					}
 					// pay the clerk
 					this.payClerk();

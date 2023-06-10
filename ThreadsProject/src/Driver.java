@@ -58,9 +58,13 @@ public class Driver implements Runnable{
 					this.updateDistanceDrover(currentRide.getDistance());
 					if (currentRide.getVehicle().getType().equals("Taxi")) {
 						informationSystem.addTaxiMission();
+						System.out.println("added ride: " + currentRide.getCustomerID() + " to taxi list");
+
 					}
 					else {
 						informationSystem.addDeliveryMission();
+						System.out.println("added ride: " + currentRide.getCustomerID() + " to delivery list");
+
 					}
 
 					if (currentRide.getServiceArea().equals("Tel Aviv")) {
